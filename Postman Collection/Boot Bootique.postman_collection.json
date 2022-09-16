@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "e91fe2a4-238b-48e7-b3b6-85e63ee5a031",
+		"name": "Boot Bootique",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20889812"
+	},
+	"item": [
+		{
+			"name": "Get All Boots",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/v1/boots/types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						"v1",
+						"boots",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Boot Types",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/v1/boots/types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						"v1",
+						"boots",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Boot By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/v1/boots/types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						"v1",
+						"boots",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Boot By Material type",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8087/api/v1/boots/types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						"v1",
+						"boots",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Boot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bootType\": \"CHELSEA\",\r\n    \"size\": 12,\r\n    \"quantity\": 78,\r\n    \"material\": \"leather\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/api/v1/boots/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"api",
+						"v1",
+						"boots",
+						"add"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
