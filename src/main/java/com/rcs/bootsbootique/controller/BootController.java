@@ -1,11 +1,15 @@
 package com.rcs.bootsbootique.controller;
+
 //yet pending
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rcs.bootsbootique.Impl.IBootsService;
+import com.rcs.bootsbootique.Service.BootsServiceImpl;
 import com.rcs.bootsbootique.entities.Boot;
 import com.rcs.bootsbootique.enums.BootType;
 import com.rcs.bootsbootique.exceptions.NotImplementedException;
@@ -27,12 +33,15 @@ import com.rcs.bootsbootique.repositories.BootRepository;
 public class BootController {
 
 	@Autowired
+	private IBootsService ibootservice;
+
+	@Autowired
 	private BootRepository bootRepo;
-
+	
 	@GetMapping("/all")
-	public Iterable<Boot> getAllBoots() {
-		return bootRepo.findAll();
-
+	public ResponseEntity<List<Boot>> getAllBoots() throws NotImplementedException {
+		List<Boot> bootsList=ibootservice.getAllBoots();
+		return new ResponseEntity<List<Boot>>(bootsList, HttpStatus.OK);
 	}
 
 	@GetMapping("/types")
@@ -41,7 +50,7 @@ public class BootController {
 	}
 
 	@GetMapping("/{id}")
-	public Boot getAllBoots(@PathVariable("id") Long id) {
+	public Boot getAllBoots(@PathVariable("id") Integer id) {
 		Optional<Boot> boot = bootRepo.findById(id);
 		if (boot.isPresent()) {
 			return boot.get();
@@ -52,9 +61,9 @@ public class BootController {
 	}
 
 	@PostMapping("/add")
-	public Boot addBoot(@RequestBody Boot boot) {
-
-		return bootRepo.saveAndFlush(boot);
+	public ResponseEntity<Boot> insertBoot(@RequestBody final Boot boot) throws NotImplementedException {
+		Boot addboot = ibootservice.addBoot(boot);
+		return new ResponseEntity<Boot>(addboot, HttpStatus.OK);
 
 	}
 
@@ -79,13 +88,13 @@ public class BootController {
 			@RequestParam(required = false, name = "quantity") Integer minQuantity) throws QueryNotSupportedException {
 		if (Objects.nonNull(material)) {
 			if (Objects.nonNull(type) && Objects.nonNull(size) && Objects.nonNull(minQuantity)) {
-			
+
 				// call the repository method that accepts a material, type, size, and minimum
 				// quantity
 				throw new QueryNotSupportedException(
 						"This query is not supported! Try a different combination of search parameters.");
 			} else if (Objects.nonNull(type) && Objects.nonNull(size)) {
-			
+
 				// call the repository method that accepts a material, size, and type
 				throw new QueryNotSupportedException(
 						"This query is not supported! Try a different combination of search parameters.");
@@ -95,13 +104,13 @@ public class BootController {
 				throw new QueryNotSupportedException(
 						"This query is not supported! Try a different combination of search parameters.");
 			} else if (Objects.nonNull(type)) {
-				
+
 				// call the repository method that accepts a material and a type
 				throw new QueryNotSupportedException(
 						"This query is not supported! Try a different combination of search parameters.");
 			} else {
 				bootRepo.findBootByMaterial(material);
-					
+
 				// call the repository method that accepts only a material
 				throw new QueryNotSupportedException(
 						"This query is not supported! Try a different combination of search parameters.");
