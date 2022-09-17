@@ -1,12 +1,10 @@
 package com.rcs.bootsbootique.controller;
 
-//yet pending
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rcs.bootsbootique.Impl.IBootsService;
-import com.rcs.bootsbootique.Service.BootsServiceImpl;
 import com.rcs.bootsbootique.entities.Boot;
 import com.rcs.bootsbootique.enums.BootType;
 import com.rcs.bootsbootique.exceptions.NotImplementedException;
@@ -37,10 +34,10 @@ public class BootController {
 
 	@Autowired
 	private BootRepository bootRepo;
-	
+
 	@GetMapping("/all")
 	public ResponseEntity<List<Boot>> getAllBoots() throws NotImplementedException {
-		List<Boot> bootsList=ibootservice.getAllBoots();
+		List<Boot> bootsList = ibootservice.getAllBoots();
 		return new ResponseEntity<List<Boot>>(bootsList, HttpStatus.OK);
 	}
 
@@ -49,6 +46,12 @@ public class BootController {
 		return Arrays.asList(BootType.values());
 	}
 
+//	@GetMapping("/all/{type}")
+//	public ResponseEntity<List<Boot>> getBootbyType(@PathVariable("type")  Boot bootType) throws NotImplementedException {
+//		List<Boot> bootslistbytype=  bootRepo.findBootByType(bootType);
+//		return new ResponseEntity<List<Boot>>(bootslistbytype,HttpStatus.OK);
+//	}
+	
 	@GetMapping("/{id}")
 	public Boot getAllBoots(@PathVariable("id") Integer id) {
 		Optional<Boot> boot = bootRepo.findById(id);
@@ -73,8 +76,21 @@ public class BootController {
 	}
 
 	@PutMapping("/{id}/quantity/increment")
-	public Boot incrementQuantity(@PathVariable("id") Integer id) {
-		throw new NotImplementedException("Don't have the ability to increment boot counts yet!");
+	public ResponseEntity<Boot> incrementQuantity(@PathVariable("id") Integer id, @RequestBody Boot bootDetails) {
+		Boot incrementQuantity = bootRepo.findById(id)
+				.orElseThrow(() -> new NotImplementedException("Don't have the ability to increment boot counts yet!"));
+		Integer getinitialQuantity = incrementQuantity.getQuantity();
+		System.out.println(getinitialQuantity);
+		incrementQuantity.setQuantity(bootDetails.getQuantity());
+		incrementQuantity.getBootType();
+		incrementQuantity.getMaterial();
+		incrementQuantity.getSize();
+		incrementQuantity.getMrp();
+		incrementQuantity.getSalesPrice();
+		bootRepo.save(incrementQuantity);
+		
+		return new ResponseEntity<Boot>(incrementQuantity, HttpStatus.OK);
+
 	}
 
 	@PutMapping("/{id}/quantity/decrement")
@@ -109,7 +125,7 @@ public class BootController {
 				throw new QueryNotSupportedException(
 						"This query is not supported! Try a different combination of search parameters.");
 			} else {
-				bootRepo.findBootByMaterial(material);
+				//bootRepo.findBootByMaterial(material);
 
 				// call the repository method that accepts only a material
 				throw new QueryNotSupportedException(
